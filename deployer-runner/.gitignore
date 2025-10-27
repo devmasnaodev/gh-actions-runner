@@ -1,0 +1,70 @@
+# Variáveis de ambiente sensíveis
+.env
+
+# Logs
+*.log
+logs/
+
+# Docker
+.docker/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Node.js (se usado em workflows)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (se usado em workflows)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PHP/Composer
+vendor/
+composer.lock
+.composer/
+
+# Deployer
+.dep/
+
+# SSH keys
+*.pem
+*.key
+id_rsa*
+
+# Backup files
+*.bak
+*.backup

@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Environment files
+.env
+.env.example
+
+# Logs
+*.log
+
+# Node modules (se existir)
+node_modules
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+
+# IDEs
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# PHP/Composer
+vendor/
+composer.lock
+
+# Deploy files (não incluir na imagem base)
+deploy*.php

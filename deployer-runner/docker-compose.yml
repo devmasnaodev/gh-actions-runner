@@ -1,0 +1,52 @@
+services:
+  github-runner-deployer:
+    build: 
+      context: ..
+      dockerfile: deployer-runner/Dockerfile
+    container_name: github-actions-runner-deployer
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - runner_deployer_data:/home/runner/_work
+      - composer_cache:/home/runner/.composer
+    environment:
+      # Configuração obrigatória (PAT)
+      - GITHUB_PAT=${GITHUB_PAT}
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
+      
+      # Configurações do runner
+      - RUNNER_VERSION=${RUNNER_VERSION:-2.329.0}
+      - RUNNER_NAME=${RUNNER_NAME:-deployer-runner-${HOSTNAME:-default}}
+      - RUNNER_LABELS=${RUNNER_LABELS:-self-hosted,deployer,linux,ubuntu,php,composer}
+      - RUNNER_GROUP=${RUNNER_GROUP:-default}
+      
+      # Configurações de deployment
+      - SERVER_IP=${SERVER_IP}
+      - SERVER_PORT=${SERVER_PORT:-22}
+      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
+      - DEPLOY_ENV=${DEPLOY_ENV:-production}
+      - DEPLOY_FILE=${DEPLOY_FILE:-deploy.php}
+      
+      # Configurações do Docker
+      - DOCKER_USER=${DOCKER_USER}
+      - DOCKER_PUSH=${DOCKER_PUSH:-false}
+    
+    # Recursos para runner deployer (ajustados para workloads de deployment)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 4G
+    #       cpus: '2.0'
+    
+    # Healthcheck para monitorar o runner
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  runner_deployer_data:
+  composer_cache:
