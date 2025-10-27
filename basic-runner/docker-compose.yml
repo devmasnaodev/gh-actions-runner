@@ -1,0 +1,39 @@
+services:
+  github-runner-basic:
+    build: 
+      context: ..
+      dockerfile: basic-runner/Dockerfile
+    container_name: github-actions-runner-basic
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - runner_basic_data:/home/runner/_work
+    environment:
+      # Configuração obrigatória (PAT)
+      - GITHUB_PAT=${GITHUB_PAT}
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
+      
+      # Configurações do runner
+      - RUNNER_VERSION=${RUNNER_VERSION:-2.329.0}
+      - RUNNER_NAME=${RUNNER_NAME:-basic-runner-${HOSTNAME:-default}}
+      - RUNNER_LABELS=${RUNNER_LABELS:-basic,linux,ubuntu}
+      - RUNNER_GROUP=${RUNNER_GROUP:-default}
+    
+    # Recursos limitados para runner básico
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 1G
+    #       cpus: '0.5'
+    
+    # Healthcheck para monitorar o runner
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  runner_basic_data:
